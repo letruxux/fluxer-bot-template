@@ -7,7 +7,8 @@
     "build": "tsc && tsc-alias",
     "build:clean": "rimraf build/ && npm run build",
     "start": "node build/index.js",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint src/"
   },
   "keywords": [
     "fluxer",
@@ -19,15 +20,19 @@
   "license": "MIT",
   "dependencies": {
     "@fluxerjs/core": "^1.2.2",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.0",
+    "eslint": "^9.21.0",
     "prettier": "^3.8.1",
     "rimraf": "^5.0.10",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.19.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.25.0"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -6,12 +6,6 @@ import CommandHandler from './handlers/CommandHandler';
 import EventHandler from './handlers/EventHandler';
 import log from './utils/logger';
 
-try {
-  config.validate();
-} catch (error: any) {
-  log.fatal('Config', error.message);
-  process.exit(1);
-}
 
 // this is used to create the client :)
 const client = new Client({
@@ -65,7 +59,7 @@ async function shutdown(signal: string): Promise<void> {
 
   try {
     client.destroy();
-  } catch {}
+  } catch { }
 
   process.exit(0);
 }

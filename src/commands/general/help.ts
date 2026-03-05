@@ -29,7 +29,7 @@ const command: Command = {
             .reply(
               `No command called \`${cmdName}\` found. Use \`${prefix}help\` to see all commands.`
             )
-            .catch(() => {}));
+            .catch(() => { }));
         }
 
         const embed = new EmbedBuilder()
@@ -58,7 +58,7 @@ const command: Command = {
         }
 
         embed.setTimestamp();
-        return void (await message.reply({ embeds: [embed] }).catch(() => {}));
+        return void (await message.reply({ embeds: [embed] }).catch(() => { }));
       }
 
       // trhre full command list
@@ -89,7 +89,7 @@ const command: Command = {
       }
 
       embed.setTimestamp();
-      await message.reply({ embeds: [embed] }).catch(() => {});
+      await message.reply({ embeds: [embed] }).catch(() => { });
     } catch (error: any) {
       console.error(`Error in !help: ${error.message || error}`);
     }
