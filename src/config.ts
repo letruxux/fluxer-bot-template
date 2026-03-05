@@ -21,7 +21,9 @@ const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
   // print each failing field clearly so it's easy to know what to fix
-  const issues = parsed.error.issues.map((i: z.ZodIssue) => `  • ${i.path.join('.')}: ${i.message}`).join('\n');
+  const issues = parsed.error.issues
+    .map((i: z.ZodIssue) => `  • ${i.path.join('.')}: ${i.message}`)
+    .join('\n');
   console.error(`\n[Config] Invalid environment variables:\n${issues}\n`);
   process.exit(1);
 }

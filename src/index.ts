@@ -6,7 +6,6 @@ import CommandHandler from './handlers/CommandHandler';
 import EventHandler from './handlers/EventHandler';
 import log from './utils/logger';
 
-
 // this is used to create the client :)
 const client = new Client({
   intents: 0, // fluxer.js does not support intents.
@@ -59,7 +58,7 @@ async function shutdown(signal: string): Promise<void> {
 
   try {
     client.destroy();
-  } catch { }
+  } catch {}
 
   process.exit(0);
 }

@@ -5,17 +5,15 @@
 import type { Command } from '../../types';
 
 const command: Command = {
-    name: 'secret',
-    description: 'A command only the bot owner can run.',
-    category: 'general',
-    ownerOnly: true,
-    hidden: true,
+  name: 'secret',
+  description: 'A command only the bot owner can run.',
+  category: 'general',
+  ownerOnly: true,
+  hidden: true,
 
-    async execute(message, _args, _client) {
-        await message
-            .reply('👋 Hey owner! This is a secret owner-only command.')
-            .catch(() => { });
-    },
+  async execute(message, _args, _client) {
+    await message.reply('👋 Hey owner! This is a secret owner-only command.').catch(() => {});
+  },
 };
 
 export default command;
