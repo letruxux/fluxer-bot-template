@@ -12,7 +12,7 @@ function formatUptime(ms: number): string {
 }
 
 const event: BotEvent = {
-  name: 'ready',
+  name: 'READY',
   once: true,
 
   execute(client: any) {
