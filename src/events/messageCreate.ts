@@ -1,7 +1,7 @@
 import type { BotEvent } from '../types';
 
 const event: BotEvent = {
-  name: 'MESSAGE_CREATE',
+  name: 'messageCreate',
 
   async execute(message: any, client: any) {
     // ignores bot messages because bots have no souls therefore they dont deserve to be listened to. also prevents potential infinite loops if the bot responds to itself. hehe

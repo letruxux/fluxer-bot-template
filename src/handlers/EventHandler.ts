@@ -37,37 +37,45 @@ export default class EventHandler {
           continue;
         }
 
-        // once or persistent listener
-        if (event.once) {
-          this.client.once(event.name, (...args: unknown[]) => {
-            try {
-              const result = event.execute(...args, this.client);
-              if (result && typeof (result as any).catch === 'function') {
-                (result as any).catch((err: Error) => {
-                  console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
-                });
-              }
-            } catch (err) {
-              console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
+        const handler = (...args: unknown[]) => {
+          try {
+            const result = event.execute(...args, this.client);
+            if (result && typeof (result as any).catch === 'function') {
+              (result as any).catch((err: Error) => {
+                console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
+              });
             }
-          });
+          } catch (err) {
+            console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
+          }
+        };
+
+        const names = new Set<string>();
+        const original = event.name;
+        names.add(original);
+
+        const camelToSnakeUpper = (s: string) =>
+          s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toUpperCase();
+        const snakeUpperToCamel = (s: string) =>
+          s.toLowerCase().replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+
+        if (original.includes('_')) {
+          names.add(snakeUpperToCamel(original));
         } else {
-          this.client.on(event.name, (...args: unknown[]) => {
-            try {
-              const result = event.execute(...args, this.client);
-              if (result && typeof (result as any).catch === 'function') {
-                (result as any).catch((err: Error) => {
-                  console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
-                });
-              }
-            } catch (err) {
-              console.error(`[EventHandler] Unhandled error in event ${event.name}:`, err);
-            }
-          });
+          names.add(camelToSnakeUpper(original));
+        }
+
+        for (const name of names) {
+          if (event.once) this.client.once(name, handler);
+          else this.client.on(name, handler);
         }
 
         this.events.set(event.name, event);
-        console.log(`[EventHandler] Loaded: ${event.name}${event.once ? ' (once)' : ''}`);
+        console.log(
+          `[EventHandler] Loaded: ${event.name}${event.once ? ' (once)' : ''}${
+            names.size > 1 ? ` (aliases: ${Array.from(names).join(', ')})` : ''
+          }`
+        );
       } catch (error: any) {
         console.error(`[EventHandler] Error loading event ${file}:`, error.message);
       }
