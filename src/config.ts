@@ -4,7 +4,7 @@
 import dotenv from 'dotenv';
 import { z } from 'zod';
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const envSchema = z.object({
   TOKEN: z.string().min(1, 'TOKEN is required PLEASE add it to your .env file'),
