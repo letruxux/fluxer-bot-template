@@ -123,6 +123,7 @@ start().catch((err) => {
   process.exit(1);
 });
 
+// this adds the handler types to the client, for autocomplete
 declare module '@fluxerjs/core' {
   interface Client {
     commandHandler: CommandHandler;
