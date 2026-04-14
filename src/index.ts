@@ -36,8 +36,8 @@ function dumpProcessState(reason: string): void {
       log.info('ProcessExit', `handles=${JSON.stringify(handles.map(summarize))}`);
     if (requests.length)
       log.info('ProcessExit', `requests=${JSON.stringify(requests.map(summarize))}`);
-  } catch (e: any) {
-    log.error('ProcessExit', e?.message || e);
+  } catch (e) {
+    log.error('ProcessExit', e instanceof Error ? e.message : e);
   }
 }
 
@@ -108,12 +108,12 @@ process.on('beforeExit', (code) => dumpProcessState(`beforeExit code=${code}`));
 process.on('exit', (code) => dumpProcessState(`exit code=${code}`));
 
 // catch unhandled errors and log them to prevent the bot from crashing without any logs. This is especially useful for catching errors in events/commands that aren't properly handled.
-process.on('unhandledRejection', (error: any) => {
-  log.error('Unhandled', error?.message || error);
+process.on('unhandledRejection', (error) => {
+  log.error('Unhandled', error instanceof Error ? error.message : error);
 });
 
-process.on('uncaughtException', (error: any) => {
-  log.fatal('Uncaught', error?.message || error);
+process.on('uncaughtException', (error) => {
+  log.fatal('Uncaught', error instanceof Error ? error.message : error);
   setTimeout(() => process.exit(1), 1000);
 });
 

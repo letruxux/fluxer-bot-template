@@ -116,11 +116,12 @@ Create a new file in `src/events/` - the handler will register it auto-magically
 ```ts
 // src/events/guildCreate.ts
 import type { BotEvent } from '@/types';
+import type { Guild, Client } from '@fluxerjs/core';
 
 const event: BotEvent = {
   name: 'guildCreate',
 
-  execute(guild: any, client: any) {
+  execute(guild: Guild, client: Client) {
     console.log(`Joined guild: ${guild.name}`);
   },
 };

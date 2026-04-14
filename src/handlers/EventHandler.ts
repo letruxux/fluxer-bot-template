@@ -76,8 +76,11 @@ export default class EventHandler {
             names.size > 1 ? ` (aliases: ${Array.from(names).join(', ')})` : ''
           }`
         );
-      } catch (error: any) {
-        console.error(`[EventHandler] Error loading event ${file}:`, error.message);
+      } catch (error) {
+        console.error(
+          `[EventHandler] Error loading event ${file}:`,
+          error instanceof Error ? error.message : error
+        );
       }
     }
 

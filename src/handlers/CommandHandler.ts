@@ -68,8 +68,11 @@ export default class CommandHandler {
           }
 
           console.log(`[CommandHandler] Loaded: ${command.name} (${category})`);
-        } catch (error: any) {
-          console.error(`[CommandHandler] Error loading command ${file}:`, error.message);
+        } catch (error) {
+          console.error(
+            `[CommandHandler] Error loading command ${file}:`,
+            error instanceof Error ? error.message : error
+          );
         }
       }
     }
@@ -142,8 +145,11 @@ export default class CommandHandler {
     // Execute
     try {
       await command.execute(message, args, this.client);
-    } catch (error: any) {
-      console.error(`[CommandHandler] Error in !${commandName}:`, error.message || error);
+    } catch (error) {
+      console.error(
+        `[CommandHandler] Error in !${commandName}:`,
+        error instanceof Error ? error.message : error
+      );
       await message.reply('There was an error executing this command.').catch(() => {});
     }
   }

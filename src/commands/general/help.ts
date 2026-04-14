@@ -90,8 +90,8 @@ const command: Command = {
 
       embed.setTimestamp();
       await message.reply({ embeds: [embed] }).catch(() => {});
-    } catch (error: any) {
-      console.error(`Error in !help: ${error.message || error}`);
+    } catch (error) {
+      console.error(`Error in !help: ${error instanceof Error ? error.message : error}`);
     }
   },
 };

@@ -40,8 +40,8 @@ const command: Command = {
         .setTimestamp();
 
       await message.reply({ embeds: [embed] }).catch(() => {});
-    } catch (error: any) {
-      console.error(`Error in !userinfo: ${error.message || error}`);
+    } catch (error) {
+      console.error(`Error in !userinfo: ${error instanceof Error ? error.message : error}`);
     }
   },
 };

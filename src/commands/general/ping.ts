@@ -30,8 +30,8 @@ const command: Command = {
         .setTimestamp();
 
       await msg.edit({ content: '', embeds: [embed] });
-    } catch (error: any) {
-      console.error(`Error in !ping: ${error.message || error}`);
+    } catch (error) {
+      console.error(`Error in !ping: ${error instanceof Error ? error.message : error}`);
     }
   },
 };
