@@ -12,11 +12,11 @@ const command: Command = {
   cooldown: 5,
 
   async execute(message, args, client) {
-    const commandHandler = (client as any).commandHandler;
+    const commandHandler = client.commandHandler;
     if (!commandHandler) return void (await message.reply('Command handler not available.'));
 
     const prefix = config.prefix;
-    const isOwner = config.ownerId && (message as any).author.id === config.ownerId;
+    const isOwner = config.ownerId && message.author.id === config.ownerId;
 
     try {
       // specific command info

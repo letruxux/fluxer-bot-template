@@ -55,8 +55,8 @@ const client = new Client({
 const commandHandler = new CommandHandler(client);
 const eventHandler = new EventHandler(client);
 
-(client as any).commandHandler = commandHandler;
-(client as any).eventHandler = eventHandler;
+client.commandHandler = commandHandler;
+client.eventHandler = eventHandler;
 
 // bot startup
 async function start(): Promise<void> {
@@ -122,3 +122,10 @@ start().catch((err) => {
   log.fatal('Startup', err.message || err);
   process.exit(1);
 });
+
+declare module '@fluxerjs/core' {
+  interface Client {
+    commandHandler: CommandHandler;
+    eventHandler: EventHandler;
+  }
+}

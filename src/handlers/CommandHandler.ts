@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PermissionFlags } from '@fluxerjs/core';
-import type { Client, Message } from '@fluxerjs/core';
+import type { Client, GuildMember, Message } from '@fluxerjs/core';
 import type { Command } from '../types';
 import config from '../config';
 
@@ -81,7 +81,7 @@ export default class CommandHandler {
    * Process an incoming message and execute the matching command.
    */
   async handleMessage(message: Message): Promise<void> {
-    if ((message as any).author?.bot || !message.content) return;
+    if (message.author?.bot || !message.content) return;
 
     // Check prefix
     if (!message.content.startsWith(this.prefix)) return;
@@ -94,7 +94,7 @@ export default class CommandHandler {
     if (!command) return;
 
     // Guild-only check
-    const guild = (message as any).guild;
+    const guild = message.guild;
     if (!guild && !command.allowDM) {
       await message.reply('This command can only be used in a server.').catch(() => {});
       return;
@@ -109,7 +109,7 @@ export default class CommandHandler {
       }
 
       const hasPermission = command.permissions.some((perm) => {
-        return (member as any).permissions?.has(
+        return member.permissions?.has(
           (PermissionFlags as unknown as Record<string, bigint>)[perm]
         );
       });
@@ -124,14 +124,14 @@ export default class CommandHandler {
 
     // Owner-only check
     if (command.ownerOnly && config.ownerId) {
-      if ((message as any).author.id !== config.ownerId) {
+      if (message.author.id !== config.ownerId) {
         await message.reply('This command is restricted to the bot owner.').catch(() => {});
         return;
       }
     }
 
     // Cooldown check
-    const cooldownInfo = this.checkCooldown((message as any).author.id, commandName);
+    const cooldownInfo = this.checkCooldown(message.author.id, commandName);
     if (!cooldownInfo.ready) {
       await message
         .reply(`Please wait ${cooldownInfo.remaining} second(s) before using this command again.`)
@@ -151,22 +151,22 @@ export default class CommandHandler {
   /**
    * Resolve a guild member from a message.
    */
-  private async getMember(message: Message): Promise<unknown> {
-    let guild = (message as any).guild;
+  private async getMember(message: Message): Promise<GuildMember | null> {
+    let guild = message.guild;
 
-    if (!guild && (message as any).guildId) {
+    if (!guild && message.guildId) {
       try {
-        guild = await this.client.guilds.fetch((message as any).guildId);
+        guild = await this.client.guilds.fetch(message.guildId);
       } catch {
         return null;
       }
     }
     if (!guild) return null;
 
-    let member = guild.members?.get((message as any).author.id);
+    let member = guild.members?.get(message.author.id);
     if (!member) {
       try {
-        member = await guild.fetchMember((message as any).author.id);
+        member = await guild.fetchMember(message.author.id);
       } catch {
         return null;
       }
